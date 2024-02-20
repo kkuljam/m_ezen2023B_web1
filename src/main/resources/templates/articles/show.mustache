@@ -1,0 +1,23 @@
+{{>layouts/header}}
+<a href="/articles">목록 보기</a>
+<a href="/articles/{{article.id}}/edit">수정</a>
+<a href="/articles/{{article.id}}/delete">삭제</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Title</td>
+                <td>Content</td>
+            </tr>
+        </thead>
+        <tbody>
+        {{#article}}<!-- 이거 안쓰고 article.id 이렇게도 가능함-->
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{content}}</td>
+            </tr>
+        {{/article}}
+        </tbody>
+    </table>
+{{>layouts/footer}}

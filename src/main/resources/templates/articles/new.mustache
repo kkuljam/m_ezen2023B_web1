@@ -1,0 +1,12 @@
+
+{{>layouts/header}}
+
+    <form action="/articles/create" method="post">
+        제목: <input name="title"/><br/>
+        내용: <textarea name="content"></textarea><br/>
+        <button type="submit">submit</button>
+        <a href="/articles">뒤로가기</a>
+    </form>
+
+
+{{>layouts/footer}}

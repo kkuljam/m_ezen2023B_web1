@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        할일 내용:<input type="text" id="content" placeholder="할일 내용"/>
+        마감일 :<input type="date" id="deadline"/>
+        <button type="button" onclick="doPost()">등록</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>내용</th>
+            <th>마감일</th>
+            <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <!-- 스프링 컨트롤에게 요청/응답 받기-->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="todo.js"></script>
+
+</body>
+</html>

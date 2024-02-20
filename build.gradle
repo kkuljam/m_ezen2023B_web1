@@ -1,0 +1,38 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {//여기에 외부 라이브러리 설치 코드
+	//1. spring web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//spring web test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//2. mysql
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	//3. 머스테치 : 화면 뷰
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	//4. 롬북
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(17)
+}
