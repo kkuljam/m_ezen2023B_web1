@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #main{
+            width:500px;
+            margin:0 auto;
+        }
+        #box1{
+            width:300px;
+            margin:0 auto;
+            margin-bottom:50px;
+        }
+        table{
+            width:500px;
+            margin:0 auto;
+        }
+        #main>h3{
+            text-align:center;
+            font-weight:bold;
+            font-size:24px;
+            margin-bottom:40px;
+        }
+        #name,#phone{
+            margin-bottom:30px;
+        }
+        #saveBtn{
+            width:200px;
+            display:block;
+            margin:0 auto;
+            background-color:#F5A9F2;
+            border-radius:10px;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <h3> 인사관리 </h3>
+    <div id="box1">
+        사원이름 : <input id="name" />   <br/>
+        전화번호 : <input id="phone"/>  <br/>
+        <button id="saveBtn" onclick="doCreate()"> 등록 </button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th> 사원번호 </th> <th> 이름 </th> <th> 전화번호 </th> <th> 비고 </th>
+        </tr>
+        </thead>
+        <tbody id="team3">
+<!--
+        <tr>
+            <th> 1 </th> <th> 안녕하세요 </th> <th> 유재석 </th> <th>
+            <button onclick="doDelete( 2 )" >삭제</button>
+            <button onclick="doUpdate( 3 )" >수정</button>
+            <button onclick="doPlus( 1 )" >인사고과</button>
+        </th>
+        </tr>-->
+        </tbody>
+    </table>
+
+    <div id="plus">
+
+    </div>
+
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/js/team3.js"></script>
+</div>
+
+</body>
+</html>
