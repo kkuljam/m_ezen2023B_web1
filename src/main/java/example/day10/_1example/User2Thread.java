@@ -1,0 +1,20 @@
+package example.day10._1example;
+
+public class User2Thread extends Thread{
+    // entends Thread : 작업스레드 생성하기 위해
+
+    //1. 필드 , 유저1 객체가 가지고 있는 계산기
+    private Calculator calculator;
+    public User2Thread(){
+        //setName : Thread 클래스로부터 상속받은 함수(작업스레드)
+        setName("User2Thread");
+    }
+
+    public void setCalculator(Calculator calculator){
+        this.calculator=calculator;
+    }
+    @Override
+    public void run() {
+            calculator.setMemory(50);
+    }
+}
