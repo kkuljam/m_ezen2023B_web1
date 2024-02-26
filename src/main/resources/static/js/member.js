@@ -19,6 +19,8 @@ function login(){
             console.log(result)
             if(result){
             alert('로그인성공');
+            // js 페이지 전환
+            location.href="/"; // 로그인 성공하면 메인 페이지
             }else{
             alert('로그인 실패')
             }
