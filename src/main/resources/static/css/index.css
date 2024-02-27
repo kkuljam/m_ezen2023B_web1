@@ -26,9 +26,19 @@
 #main_menu>li{
     margin: 0px 30px;
 }
+
 #login_menu{
     display: flex;
+    align-items: center;
 }
 #login_menu>li{
     margin: 0px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* 헤더 프로필 사진 nth-child(형제인덱스 1부터 시작)*/
+#login_menu>li:nth-child(3)>img{
+    width: 80px;
+    border-radius: 50%;
 }

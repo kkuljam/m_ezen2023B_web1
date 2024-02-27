@@ -9,16 +9,27 @@ $.ajax({
         let login_menu= document.querySelector('#login_menu');
         let html = ` `;
         if(r != '' ){
-        html +=`
-                <li class="nav-item">
-                    <a class="nav-link" onclick="logout()">logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">mypage</a>
-                </li>
-                <li class="nav-item">
-                    <img src="#">${r} 님
-                </li>`
+            $.ajax({
+                url:'/member/login/info',
+                method:'get',
+                data:{id:r},
+                async : false,
+                success:(r2)=>{
+                    console.log(r2);
+                    console.log(r2.uuidFile);
+                    html +=`
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="logout()">logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">mypage</a>
+                        </li>
+                        <li class="nav-item">
+                            <img src="/img/${r2.uuidFile}">${r} 님
+                        </li>`
+                }
+            });
+
         }else{
         html +=`
 

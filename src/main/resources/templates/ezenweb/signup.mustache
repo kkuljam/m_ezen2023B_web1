@@ -1,17 +1,24 @@
 {{>ezenweb/header}}
     <h1>회원가입</h1>
+    <form class="signUpForm">
+<!--    <div>-->
+        아이디: <input type="text" id="id" name="id"><br/>
+        비밀번호: <input type="text" id="pw" name="pw"><br/>
+        비밀번호 확인:<input type="text" id="pwconfirm" name="pwconfirm"><br/>
+        이름:<input type="text" id="name" name="name"><br/>
+        전화번호:<input type="text" id="phone" name="phone"><br/>
+        이메일:<input type="text" id="email" name="email"><br/>
 
-    <div>
-        아이디: <input type="text" id="id"><br/>
-        비밀번호: <input type="text" id="pw"><br/>
-        비밀번호 확인:<input type="text" id="pwconfirm"><br/>
-        이름:<input type="text" id="name"><br/>
-        전화번호:<input type="text" id="phone"><br/>
-        이메일:<input type="text" id="email"><br/>
-        프로필 사진:<input type="text" id="img"><br/>
+        프로필 사진:
+        <input onchange="onChangeImg(this)" type="file" id="img" name="img" accept="image/*"/><br/>
+        미리보기:
+        <div> <!-- 첨부파일 미리보기-->
+            <img id="preimg" src="/img/default.jpg"/>
+        </div>
         <a href="/member/login">로그인</a>
         <button type="button" onclick="signup()">회원가입</button>
-    </div>
+<!--    </div>-->
+    </form>
     <script src="/js/member.js"></script>
     <!--{resources/static}/js/member.js-->
 {{>ezenweb/footer}}

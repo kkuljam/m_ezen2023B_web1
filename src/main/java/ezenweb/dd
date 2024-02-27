@@ -1,0 +1,17 @@
+세션: 아파치 톰켓(서버) 안에 저상소
+	-HTTP 요청에 따른 브라우저 마다의 저장소
+	- 주로 로그인 정보
+	- 메소드
+	HttpServletRequest request 객체
+	1. 세션 객체 호출 :
+	 	request.getSession()
+	2. 세션 객체의 속성 추가
+		request.getSession()setAttribute("key", value);
+	3. 세션 데이터 호출 :
+		request.getSession()getAttribute("key");
+	4. 세션 객체의 속성들을 초기화
+		request.getSession().invalidate();
+	 - 특정 속성 값만 초기화
+		request.getSession().setAttribute("key", null);
+	5.
+		request.getSession().setMaxInactiveInterval();
