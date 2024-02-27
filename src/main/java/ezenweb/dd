@@ -13,5 +13,5 @@
 		request.getSession().invalidate();
 	 - 특정 속성 값만 초기화
 		request.getSession().setAttribute("key", null);
-	5.
+	5.특정 속성 값만 초기화
 		request.getSession().setMaxInactiveInterval();
