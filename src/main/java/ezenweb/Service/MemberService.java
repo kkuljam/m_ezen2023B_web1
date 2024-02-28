@@ -11,6 +11,8 @@ public class MemberService {
     private FileService fileService; // 외부 서비스
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private EmailService emailService;
     //1. 회원가입 서비스
     public boolean doPostSignup(MemberDto memberDto){
         //1. 파일처리
@@ -26,7 +28,11 @@ public class MemberService {
         //2. DB
         //dto에 업로드 성공한 파일명을 대입한다
         memberDto.setUuidFile(fileName);
-        return memberDao.doPostSignup(memberDto);
+        boolean result= memberDao.doPostSignup(memberDto);
+
+        //*이메일 테스트
+        if(result){emailService.send();}
+        return result;
     }
 
     //2. 로그인 서비스
@@ -36,4 +42,11 @@ public class MemberService {
         //1. DAO 호출
         return memberDao.doGetLoginInfo(id);
     }
+
+    public boolean doGetFindIdCheck (String id){
+        return memberDao.doGetFindIdCheck(id);
+    }
+
+
+
 }

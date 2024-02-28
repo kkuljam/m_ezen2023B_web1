@@ -1,0 +1,14 @@
+첨부파일 전송시
+1. 폼 가져온다
+    lwer
+2. 폼객체화
+3. AJAX 대용량 폼 전송 속성
+    data : signUpData,
+    contentType : false,
+    processData : false
+
+    (스프링) 컨트롤러에서 첨부파일 매핑할 떄 = MultipartFile
+       전제조건 : Dto MultipartFile 타입 존재
+4. 객체를 서비스로 보낸다.
+5. 서비스가 업로드 처리
+    어디에 첨부ㅏㅍ일을 저장할 경로

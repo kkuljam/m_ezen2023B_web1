@@ -2,7 +2,7 @@
 
 // 1. 로그인 여부 확인 요청
 $.ajax({
-    url:'member/login/check'  ,
+    url:'/member/login/check'  ,
     method:'get'  ,
     success:  (r)=>{
         console.log(r)
