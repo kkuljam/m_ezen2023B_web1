@@ -31,7 +31,7 @@ public class MemberService {
         boolean result= memberDao.doPostSignup(memberDto);
 
         //*이메일 테스트
-        if(result){emailService.send();}
+//        if(result){emailService.send();}
         return result;
     }
 

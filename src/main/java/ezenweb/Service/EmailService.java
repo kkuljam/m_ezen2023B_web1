@@ -3,7 +3,6 @@ package ezenweb.Service;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +20,20 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-    public void send(){
+    public void send(String toEmail, String subject, String content){
         try {
             //*메일 내용물들을 포멧하기 위한 MIME 형식 객체
             MimeMessage message = javaMailSender.createMimeMessage();
             //1. 메일 기본 구성 //MimeMessageHelper(mime 객체, 첨부파일 여부, 인코딩타입); 내용물 구성
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "utf-8");
             //2. 메일 보내는 사람
-            mimeMessageHelper.setFrom("@naver.com"); //관리자 이메일
+            mimeMessageHelper.setFrom("adgrvet13@naver.com"); //관리자 이메일
             //3. 메일 받는 사람
-            mimeMessageHelper.setTo("@naver.com"); // 클라이언트(회원) 이메일(매개변수)
+            mimeMessageHelper.setTo(toEmail); // 클라이언트(회원) 이메일(매개변수)
             //4. 메일 제목
-            mimeMessageHelper.setSubject("자바에서 보내온 메시지");//매개변수
+            mimeMessageHelper.setSubject(subject);//매개변수
             //5. 메일 내용
-            mimeMessageHelper.setText("안녕하세요 내용입니다");//매개변수
+            mimeMessageHelper.setText(content);//매개변수
             //메일 전송
             javaMailSender.send(message);
         }catch (Exception e){
