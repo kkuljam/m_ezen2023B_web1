@@ -27,7 +27,7 @@ public class EmailService {
             //1. 메일 기본 구성 //MimeMessageHelper(mime 객체, 첨부파일 여부, 인코딩타입); 내용물 구성
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "utf-8");
             //2. 메일 보내는 사람
-            mimeMessageHelper.setFrom("adgrvet13@naver.com"); //관리자 이메일
+            mimeMessageHelper.setFrom("@naver.com"); //관리자 이메일
             //3. 메일 받는 사람
             mimeMessageHelper.setTo(toEmail); // 클라이언트(회원) 이메일(매개변수)
             //4. 메일 제목
