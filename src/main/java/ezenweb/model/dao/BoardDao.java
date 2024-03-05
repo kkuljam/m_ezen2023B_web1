@@ -4,6 +4,8 @@ import ezenweb.model.dto.BoardDto;
 import org.springframework.stereotype.Component;
 
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class BoardDao extends Dao{
@@ -33,36 +35,63 @@ public class BoardDao extends Dao{
         return 0;
     }
 
-    //2. 전체 글 보기 /board.do
+    // 2. 전체 글 출력 호출
+    public List<BoardDto> doGetBoardViewList( int startRow , int pageBoardSize  ){ System.out.println("BoardDao.doGetBoardViewList");
+        BoardDto boardDto = null;   List<BoardDto> list = new ArrayList<>();
+        try{  // String sql = "select * from board";
 
-    //3. 개별글 출력 /board/view.do
-    public BoardDto doGetBoardView(int bno){
-        System.out.println("BoardService.doGetBoardView");
-        BoardDto boardDto=null;
+            String sql = "select * from board b inner join member m " +
+                    " on b.mno = m.no " +
+                    " order by b.bdate desc " +
+                    " limit ? , ?";
+
+            ps =conn.prepareStatement(sql);
+            ps.setInt( 1 , startRow );
+            ps.setInt( 2 , pageBoardSize );
+
+            rs = ps.executeQuery();
+            while ( rs.next() ){
+                boardDto = new BoardDto( rs.getLong( "bno" ) , rs.getString( "btitle" ) ,
+                        rs.getString( "bcontent" ) , rs.getString( "bfile" ) ,
+                        rs.getLong("bview") , rs.getString("bdate") ,
+                        rs.getLong("mno") , rs.getLong("bcno") , null ,
+                        rs.getString("id") , rs.getString("img") );
+                list.add( boardDto );
+            }
+        }catch (Exception e ){ System.out.println("e = " + e);  }
+        return list;
+    }
+
+    //2-2 전체 게시글 수 호출
+    public int getBoardSize(){
         try {
-            String sql="select*from board where bno=? ";
-            ps=conn.prepareStatement(sql);
-            ps.setLong(1,bno);
-
-            rs= ps.executeQuery();
+            String sql="select count(*) from board;";
+            ps= conn.prepareStatement(sql);
+            rs=ps.executeQuery();
             if(rs.next()){
-                System.out.println("dao 찾아짐");
-                return new BoardDto(
-                        rs.getLong(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getLong(5),
-                        rs.getString(6),
-                        rs.getLong(7),
-                        rs.getLong(8),
-                        null
-                );
+                return rs.getInt(1);
             }
         }catch (Exception e){
             System.out.println("e = " + e);
         }
-        return null;
+        return 0;
+    }
+
+    // 3. 개별 글 출력 호출
+    public BoardDto doGetBoardView(int bno ) { System.out.println("BoardDao.doGetBoardView");
+        BoardDto boardDto = null;
+        try{  String sql ="select * from board b inner join member m on b.mno = m.no where b.bno = ? ";
+            ps =conn.prepareStatement(sql);
+            ps.setLong( 1 , bno );       rs = ps.executeQuery();
+            if( rs.next() ){
+                boardDto = new BoardDto( rs.getLong( "bno" ) , rs.getString( "btitle" ) ,
+                        rs.getString( "bcontent" ) , rs.getString( "bfile" ) ,
+                        rs.getLong("bview") , rs.getString("bdate") ,
+                        rs.getLong("mno") , rs.getLong("bcno") , null ,
+                        rs.getString("id") , rs.getString("img") );
+            }
+        }catch (Exception e ){  System.out.println("e = " + e);   }
+        return boardDto;
     }
 
     //4. 글 수정 처리 /board/update.do

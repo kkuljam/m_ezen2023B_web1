@@ -3,6 +3,7 @@ package ezenweb.controller;
 import ezenweb.Service.BoardService;
 import ezenweb.Service.MemberService;
 import ezenweb.model.dto.BoardDto;
+import ezenweb.model.dto.BoardPageDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,13 +40,19 @@ public class BoardController {
     }
 
     //2. 전체 글 보기 /board.do
+    @GetMapping("/do")
+    @ResponseBody
+    public BoardPageDto doGetBoardViewList(int page){
+        System.out.println("BoardController.doGetBoardView");
+        return boardService.doGetBoardViewList(page);
+    }
 
-    //3. 개별글 출력 /board/view.do
+    // 3. 개별 글 출력 호출               /board/view.do         get           게시물번호      dto
     @GetMapping("/view.do")
     @ResponseBody
-    public BoardDto doGetBoardView(@RequestParam int bno){
-        System.out.println("Controller: doGetBoardView");
-        return boardService.doGetBoardView(bno);
+    public BoardDto doGetBoardView(@RequestParam int bno ) {
+        System.out.println("BoardController.doGetBoardView");
+        return boardService.doGetBoardView( bno );
     }
 
     //4. 글 수정 처리 /board/update.do
