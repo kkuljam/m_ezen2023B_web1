@@ -31,24 +31,24 @@ public class BoardService {
     }
 
     // 2. 전체 글 출력 호출
-    public BoardPageDto doGetBoardViewList( int page ){   System.out.println("BoardService.doGetBoardViewList");
+    public BoardPageDto doGetBoardViewList( int page, int pageBoardSize,int bcno, String key, String keyword ){   System.out.println("BoardService.doGetBoardViewList");
 
         // 페이지처리시 사용할 SQL 구문 : limit 시작레코드번호(0부터) , 출력개수
 
         // 1. 페이지당 게시물을 출력할 개수          [ 출력개수 ]
-        int pageBoardSize = 5;
+        //int pageBoardSize = 5;
 
         // 2. 페이지당 게시물을 출력할 시작 레코드번호. [ 시작레코드번호(0부터) ]
         int startRow = ( page-1 ) * pageBoardSize;
         //3. 총 페이지수
             //1. 전체 게시글 수
-        int totalBoardSize=boardDao.getBoardSize();
+        int totalBoardSize=boardDao.getBoardSize(bcno,key,keyword);
             //2. 총 페이지 수 계산
         int totalPage=totalBoardSize % pageBoardSize == 0 ?
                         totalBoardSize / pageBoardSize :
                         totalBoardSize / pageBoardSize +1 ;
         //4. 게시글 정보 요청
-        List<BoardDto>list=boardDao.doGetBoardViewList( startRow , pageBoardSize );
+        List<BoardDto>list=boardDao.doGetBoardViewList( startRow , pageBoardSize,bcno,key,keyword);
 
         //5. 페이징 버튼 개수
             // 1. 페이지 버튼 최대 개수
@@ -58,12 +58,17 @@ public class BoardService {
         int startBtn = (page-1)/btnSize*btnSize+1;
         //3. 페이지 끝번호
         int endBtn = startBtn+btnSize-1;
+            //
         if(endBtn>=totalPage)endBtn=totalPage;
         //pageDto 구성
-        BoardPageDto boardPageDto=new BoardPageDto(
-                page ,totalPage,startBtn,endBtn,list
-        );
-
+      BoardPageDto boardPageDto = BoardPageDto.builder()
+                .page(page)
+                .totalBoardSize(totalBoardSize)
+                .totalPage(totalPage)
+                .list(list)
+                .startBtn(startBtn)
+                .endBtn(endBtn)
+                .build();
         return boardPageDto;
     }
     //3. 개별글 출력 /board/view.do
@@ -73,6 +78,30 @@ public class BoardService {
     }
 
     //4. 글 수정 처리 /board/update.do
+    public boolean doUpdateBoard(BoardDto boardDto){
+        System.out.println("BoardService.doUpdateBoard");
+        return boardDao.doUpdateBoard(boardDto);
+    }
 
     //5. 글 삭제 처리 /board/delete.do
+    public boolean doDeleteBoard( int bno){
+        System.out.println("BoardService.doDeleteBoard");
+
+        // -레코드 삭제 하기전에 삭제할 첨부파일명을 임시로 꺼내둔다.
+        String bfile= boardDao.doGetBoardView(bno).getBfile();
+
+        //1. DAO 처리
+        boolean result=boardDao.doDeleteBoard(bno);
+
+        //2. Dao 처리 성공시 첨부파일도 삭제
+         if(result){
+             // 기존에 첨부파일이 있었으면
+             System.out.println("bfile = " + bfile);
+             fileService.fileDelete(bfile);
+
+         }
+        return result;
+    }
+
+
 }

@@ -8,21 +8,41 @@
 
 let bno=new URL(location.href).searchParams.get('bno');
 //1. 게시물 개별 조회
-onView()
+onView();
 function onView(){
-    console.log("onView()");
+    console.log( "onView()");
     $.ajax({
-        url: `/board/view.do`,
-        method: "get",
-        data:{"bno":bno},
-        success: (r)=>{
+        url : "/board/view.do" ,
+        method : "get" ,
+        data : { "bno" : bno },   // 쿼리스트링.
+        success : (r)=>{
             console.log(r);
+            document.querySelector('.btitle').innerHTML = r.btitle
+            document.querySelector('.bcontent').innerHTML = r.bcontent;
 
-            document.querySelector('.btitle').innerHTML=r.btitle;
-            document.querySelector('.bcontent').innerHTML=r.bcontent;
-            document.querySelector('.mno').innerHTML=r.mno;
-            document.querySelector('.bdate').innerHTML=r.bdate;
-            document.querySelector('.bview').innerHTML=r.bview;
+            document.querySelector('.bcno').innerHTML = r.bcno;
+            document.querySelector('.mno').innerHTML = r.mno;
+            document.querySelector('.bdate').innerHTML = r.bdate;
+            document.querySelector('.bview').innerHTML = r.bview;
+            //* 다운로드 링크
+             document.querySelector('.bfile').innerHTML = `<a href="/board/file/download?bfile=${ r.bfile }"> ${ r.bfile } </a>`;
+
         }
-    });
+    }) // ajax end
+} // f end
+
+//2. 게시물 삭제 함수
+function onDelete(){
+    console.log("onDelete()")
+    $.ajax({
+        url : "/board/delete.do" ,
+        method : "delete" ,
+        data : { "bno" : bno },   // 쿼리스트링.
+        success : (r)=>{
+            if(r){
+                alert('삭제 성공');
+                location.href="/board";
+            }else{alert('삭제 실패')}
+        }
+    }) // ajax end
 }

@@ -35,14 +35,29 @@ public class BoardDao extends Dao{
         return 0;
     }
 
-    // 2. 전체 글 출력 호출
-    public List<BoardDto> doGetBoardViewList( int startRow , int pageBoardSize  ){ System.out.println("BoardDao.doGetBoardViewList");
+    public List<BoardDto> doGetBoardViewList( int startRow , int pageBoardSize , int bcno  , String key , String keyword  ){ System.out.println("BoardDao.doGetBoardViewList");
+
+        System.out.println("startRow = " + startRow + ", pageBoardSize = " + pageBoardSize + ", bcno = " + bcno + ", key = " + key + ", keyword = " + keyword);
+
         BoardDto boardDto = null;   List<BoardDto> list = new ArrayList<>();
         try{  // String sql = "select * from board";
-
+            // SQL 앞부분
             String sql = "select * from board b inner join member m " +
-                    " on b.mno = m.no " +
-                    " order by b.bdate desc " +
+                    " on b.mno = m.no ";
+
+            // --- SQL 가운데부분 [ 조건에 따라 where 절 추가 ]
+            // ==================== 1.만약에 카테고리 조건이 있으면 where 추가.
+            if( bcno > 0 ){ sql += " where bcno = "+bcno ; }
+
+            // ==================== 2.만약에 검색 있을때.
+            if(  !keyword.isEmpty() ){    System.out.println("★검색 키워드가 존재.");
+                if( bcno > 0 ){ sql += " and "; }   // 카테고리가 있을때. and로 연결
+                else{ sql += " where "; }           // 카테고리 없을때 where 로 연결
+                sql += keyword+" like '%"+keyword+"%' ";
+            }
+
+            // SQL 뒷부분
+            sql += " order by b.bdate desc " +
                     " limit ? , ?";
 
             ps =conn.prepareStatement(sql);
@@ -61,11 +76,22 @@ public class BoardDao extends Dao{
         }catch (Exception e ){ System.out.println("e = " + e);  }
         return list;
     }
-
     //2-2 전체 게시글 수 호출
-    public int getBoardSize(){
+    public int getBoardSize(int bcno, String key, String keyword){
+        System.out.println("bcno = " + bcno + ", key = " + key + ", keyword = " + keyword);
         try {
-            String sql="select count(*) from board;";
+            String sql="select count(*) from board b inner join member m on b.mno=m.no ";
+            //============= 만약에 카테고리 조건이 있으면 where 추가
+            if(bcno >0){
+                sql+=" where b.bcno="+bcno;
+            }
+            //========= 만약 검색 있을 때
+            if(! keyword.isEmpty()){
+                System.out.println("검색 키워드가 존재");
+                if(bcno>0){sql+=" and "; //카테고리가 있을 때 and 연결
+                }else {sql+=" where ";} // 카테고리가 없을 때 where 연결
+                sql+=key+" like '%"+keyword+"%' ";
+            }
             ps= conn.prepareStatement(sql);
             rs=ps.executeQuery();
             if(rs.next()){
@@ -80,7 +106,13 @@ public class BoardDao extends Dao{
     // 3. 개별 글 출력 호출
     public BoardDto doGetBoardView(int bno ) { System.out.println("BoardDao.doGetBoardView");
         BoardDto boardDto = null;
-        try{  String sql ="select * from board b inner join member m on b.mno = m.no where b.bno = ? ";
+        try{
+            String sql="update board set bview=bview+1 where bno=?";
+            ps= conn.prepareStatement(sql);
+            ps.setInt(1, bno);
+            ps.executeUpdate();
+
+            sql ="select * from board b inner join member m on b.mno = m.no where b.bno = ? ";
             ps =conn.prepareStatement(sql);
             ps.setLong( 1 , bno );       rs = ps.executeQuery();
             if( rs.next() ){
@@ -95,8 +127,37 @@ public class BoardDao extends Dao{
     }
 
     //4. 글 수정 처리 /board/update.do
-
+    public boolean doUpdateBoard( BoardDto boardDto){
+        System.out.println("BoardDao.doUpdateBoard");
+        try {
+            String sql="update board set btitle=? , bcontent=?, bcno=? where bno=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1,boardDto.getBtitle());
+            ps.setString(2,boardDto.getBcontent());
+            ps.setLong(3,boardDto.getBcno());
+            ps.setLong(4,boardDto.getBno());
+            int count=ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println("e = " + e);
+        }
+        return false;
+    }
     //5. 글 삭제 처리 /board/delete.do
-
+    public boolean doDeleteBoard( int bno){
+        try {
+            String sql="delete from board where bno="+bno;
+            ps= conn.prepareStatement(sql);
+            int count=ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println("e = " + e);
+        }
+        return false;
+    }
 
 }

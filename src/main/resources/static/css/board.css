@@ -1,0 +1,34 @@
+button{
+    margin: 10px;
+    border-color:#05804c;
+    background-color:white;
+    color: #05804c;
+    border-radius: 10px;
+    width: 80px;
+    height: 25px;
+}
+
+td > a {
+    color :black;
+}
+.boardTop{
+    display: flex;
+    justify-content: space-between;
+}
+.categoryActive{
+    background-color:#05804c;
+    color: white;
+}
+input{
+    border: 1.5px solid #16a267;
+    border-radius: 10px;
+}
+select{
+    border: 1.5px solid #16a267;
+    border-radius: 10px;
+    width:70px;
+    height:25px;
+}
+.next{
+    color:#05804c;
+}

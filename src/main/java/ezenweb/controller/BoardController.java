@@ -1,6 +1,7 @@
 package ezenweb.controller;
 
 import ezenweb.Service.BoardService;
+import ezenweb.Service.FileService;
 import ezenweb.Service.MemberService;
 import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.BoardPageDto;
@@ -18,6 +19,8 @@ public class BoardController {
     private HttpServletRequest request;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private FileService fileService;
     //1. 글쓰기 처리 /board/write.do    POST
     @PostMapping("/write.do")
     @ResponseBody
@@ -42,9 +45,11 @@ public class BoardController {
     //2. 전체 글 보기 /board.do
     @GetMapping("/do")
     @ResponseBody
-    public BoardPageDto doGetBoardViewList(int page){
+    public BoardPageDto doGetBoardViewList(//@RequestParam("key") String field
+            @RequestParam int page, @RequestParam int pageBoardSize, @RequestParam int bcno,
+            @RequestParam String key,@RequestParam String keyword ){
         System.out.println("BoardController.doGetBoardView");
-        return boardService.doGetBoardViewList(page);
+        return boardService.doGetBoardViewList(page,pageBoardSize,bcno,key,keyword);
     }
 
     // 3. 개별 글 출력 호출               /board/view.do         get           게시물번호      dto
@@ -56,8 +61,41 @@ public class BoardController {
     }
 
     //4. 글 수정 처리 /board/update.do
+    @PutMapping("/update.do")
+    @ResponseBody
+    public boolean doUpdateBoard(BoardDto boardDto){
+        System.out.println("BoardController.doUpdateBoard");
+        return boardService.doUpdateBoard(boardDto);
+    }
 
     //5. 글 삭제 처리 /board/delete.do
+    @DeleteMapping("/delete.do")
+    @ResponseBody
+    public boolean doDeleteBoard(@RequestParam int bno){
+        System.out.println("BoardController.doDelete");
+        return boardService.doDeleteBoard(bno);
+    }
+
+    //6. 다운로드 처리 (함수 만들때 고민할점. 1.매개변수: 무엇을? 2. 반환 3. 사용처 : get http요청
+    @GetMapping ("/file/download")
+    @ResponseBody
+    public void getBoardFileDownload(@RequestParam String bfile){
+        System.out.println("BoardController.getBoardFileDownload");
+     /*   //5가지
+            //1.
+        FileService fileService=new FileService();
+        fileService.fileDownload();
+            //2
+        new FileService().fileDownload();
+            //3.
+        FileService.getInstance().fileDownload();
+            //4. static
+        FileService.fileDownload();
+            //5. @Autowired
+        fileService.fileDownload();*/
+        fileService.fileDownload(bfile);
+        return;
+    }
     //==================
 
     //1. 글 쓰기 페이지 이동 /board/write
@@ -77,4 +115,9 @@ public class BoardController {
         return "ezenweb/board/view";
     }
     //4. 글수정 페이지 이동  /board/update
+    @GetMapping("/update")
+    public String getBoardUpdate(int bno){
+        System.out.println("BoardController.getBoardUpdate");
+        return "";
+    }
 }

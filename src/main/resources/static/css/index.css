@@ -42,3 +42,19 @@
     width: 80px;
     border-radius: 50%;
 }
+.page-link{
+
+    color: #05804c;
+}
+.page-item.active{
+    background-color: #05804c  ;
+    color:white;
+}
+.page-item.active>.page-link{
+    color: white;
+    background-color: #05804c  !important ;
+    border-color:#05804c;
+}
+a{
+text-decoration: none;
+}
