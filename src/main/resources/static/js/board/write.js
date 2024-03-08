@@ -1,11 +1,12 @@
 $(document).ready(function() {
+    let option = {
+        lang : 'ko-KR', //한글패치
+        height :500    // 에디터 세로 크기
+    }
+$('#summernote').summernote(option);
 });
 //썸머노트 옵션
-let option = {
-    lang : 'ko-KR', //한글패치
-    height :500    // 에디터 세로 크기
-}
-$('#summernote').summernote(option);
+
 //1. 글쓰기
 function onWrite(){
     console.log("onWrite()")

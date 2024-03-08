@@ -5,9 +5,9 @@ import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.BoardPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardService {
@@ -80,6 +80,23 @@ public class BoardService {
     //4. 글 수정 처리 /board/update.do
     public boolean doUpdateBoard(BoardDto boardDto){
         System.out.println("BoardService.doUpdateBoard");
+        //1. 기존 첨부파일명 구하고
+        String bfile = boardDao.doGetBoardView((int)boardDto.getBno()).getBfile();
+        // - 새로운 첨부파일이 있다. 없다.
+        if(!boardDto.getUploadfile().isEmpty()){// 수정시 새로운 첨부파일이 있으면
+            //새로운  첨부파일을 업로드하고 기존 첨부파일 삭제
+            String fileName =fileService.fileUpload(boardDto.getUploadfile());
+            if(fileName !=null){
+                boardDto.setBfile(fileName); // 새로운첨부파일의 이름 Dto 대입
+                // 기존 첨부파일 삭제
+                    //2. 기존 첨부파일 삭제
+                fileService.fileDelete(bfile);
+            }else {
+                return false; // 업로드 실패
+            }
+        }else {
+            boardDto.setBfile(bfile); // 새로운 첨부파일이 없으면 기존 첨부파일명 그대로 대입
+        }
         return boardDao.doUpdateBoard(boardDto);
     }
 
@@ -102,6 +119,22 @@ public class BoardService {
          }
         return result;
     }
+    //6 게시물 작성자 인증
+    public boolean boardWriterAuth(long bno, String mid){
+        return boardDao.boardWriterAuth(bno,mid);
+    }
 
+    //7. 댓글 등록
+    public boolean postReplyWrite(Map<String,String> map){
+        System.out.println("BoardController.postReplyWrite");
+        return boardDao.postReplyWrite(map);
+    }
+
+    //8. 댓글 출력 ( brno, brcontent,brindex , brdate, mno) 매개변수 bno
+
+    public List<Map<String,String>> getReplyDo(int bno){
+        System.out.println("BoardController.getReplyDo");
+        return boardDao.getReplyDo(bno);
+    }
 
 }

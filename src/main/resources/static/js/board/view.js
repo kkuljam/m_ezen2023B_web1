@@ -21,11 +21,30 @@ function onView(){
             document.querySelector('.bcontent').innerHTML = r.bcontent;
 
             document.querySelector('.bcno').innerHTML = r.bcno;
-            document.querySelector('.mno').innerHTML = r.mno;
+            document.querySelector('.mid').innerHTML = r.mid;
             document.querySelector('.bdate').innerHTML = r.bdate;
             document.querySelector('.bview').innerHTML = r.bview;
             //* 다운로드 링크
-             document.querySelector('.bfile').innerHTML = `<a href="/board/file/download?bfile=${ r.bfile }"> ${ r.bfile } </a>`;
+                //유효성 검사
+            if(r.bfile !='null'){
+                document.querySelector('.bfile').innerHTML = `<a href="/board/file/download?bfile=${ r.bfile }"> ${ r.bfile } </a>`;
+            }
+            //* 삭제/ 수정버튼 활성화 ( 해당 보고있는 클라이언트가 게시물 작성자의 아이디와 동일하면)
+                // 유효성 검사
+                // 현재 로그인된 아이디
+                //let loginId= document.querySelector('.top_menu > /login_menu')
+                // 현재 로그인된 아이디 또는 번호 (1. 헤더HTML 가져온다 2. )
+                $.ajax({
+                       url : "/member/login/check",
+                       method : 'get',
+                       success : (loginId)=>{
+                           if( loginId == r.mid ){
+                               let btnHTML = `<button type="button" onclick="onDelete( )"> 삭제 </button>`
+                               btnHTML +=  `<button type="button" onclick="location.href='/board/update?bno=${ r.bno }'"> 수정 </button>`
+                               document.querySelector('.btnBox').innerHTML += btnHTML
+                           }
+                       }
+                })
 
         }
     }) // ajax end
@@ -46,3 +65,4 @@ function onDelete(){
         }
     }) // ajax end
 }
+

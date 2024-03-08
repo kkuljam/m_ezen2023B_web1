@@ -68,19 +68,18 @@ public class MemberController {
     }
 
     //=======로그인 여부 확인 요청
+    // 2-2 ============= 로그인 여부 확인 요청 / 세션 호출  ================
     @GetMapping("/member/login/check")
     @ResponseBody
     public String doGetLoginCheck(){
-        // 로그인 여부 확인 = 세션이 있다 없다 확인
-            // 1-> http 요청 객체 호출, 2-> http 세션 객체 호출, 3-> http 세션 데이터 저장
-        String loginDto=null;
-
+        // * 로그인 여부 확인 = 세션이 있다 없다 확인   // 1-> http 요청 객체 호출 , 2->http세션 객체 호출 -> 3.http 세션 데이터 호출
+        // null은 형변환이 불가능하기 때문에 유효성검사.
+        String loginDto = null;
         Object sessionObj = request.getSession().getAttribute("loginDto");
-        if(sessionObj !=null){
-            loginDto=(String) sessionObj;
-        }
+        if( sessionObj != null ){     loginDto = (String) sessionObj;    }
+        // 만약에 로그인했으면(세션에 데이터가 있으면) 강제형변환을 통해 데이터 호출 아니면 0
         return loginDto;
-    }
+    } // f end
 
     //========== 로그아웃
     @GetMapping("member/logout")
