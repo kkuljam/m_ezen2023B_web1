@@ -34,10 +34,10 @@ public class BoardController {
         if(object==null){return -2;} // 세션이 없다
 
         //2. 형변환
-        String mid=(String) object;
+        String mid=(String)object;
 
         //3. mid를 mno찾아오기
-        long mno=memberService.doGetLoginInfo(mid).getNo();
+        long mno = memberService.doGetLoginInfo( mid ).getNo();
 
         //4. 작성자번호 대입
         boardDto.setMno(mno);
@@ -122,25 +122,26 @@ public class BoardController {
         fileService.fileDownload(bfile);
         return;
     }
-    //7. 댓글 작성 (brcontent, brindex, mno)
+    // 7. 댓글 작성 ( bno , brcontent , *brindex:댓글위치[0:상위, 1~:하위] ,mno  )
     @PostMapping("/reply/write.do")
     @ResponseBody
-    public boolean postReplyWrite(@RequestParam Map<String,String>map){
-        System.out.println("map = " + map);
-        Object object=request.getSession().getAttribute("loginDto");
-        if(object !=null){return false;}
-        String mid=(String)object;
-        long mno=memberService.doGetLoginInfo(mid).getNo();
-        map.put("mno",mno+"");
-        return boardService.postReplyWrite(map);
+    public boolean postReplyWrite( @RequestParam Map< String , String > map ){    System.out.println("BoardController.postReplyWrite");
+        // 1. 현재 로그인된 세션( 톰캣서버(자바프로그램) 메모리(JVM) 저장소 ) 호출
+        Object object = request.getSession().getAttribute("loginDto");
+        if( object == null ) return false; // 세션없다(로그인 안했다.)
+        // 2. 형변환
+        String mid = (String) object;
+        // 3. mid를 mno 찾아오기
+        long mno = memberService.doGetLoginInfo( mid ).getNo();
+        // 4. map에 mno 넣기
+        map.put( "mno" , mno+"" ); System.out.println("map = " + map);
+        return boardService.postReplyWrite( map );
     }
-
-    //8. 댓글 출력 ( brno, brcontent,brindex , brdate, mno) 매개변수 bno
+    // 8. 댓글 출력   댓글( brno , brcontent , brdate , brindex , mno  ) , 매개변수 : bno , 리턴변수
     @GetMapping("/reply/do")
     @ResponseBody
-    public List<Map<String,String>> getReplyDo(int bno){
-        System.out.println("BoardController.getReplyDo");
-        return boardService.getReplyDo(bno);
+    public List< Map< String , Object > > getReplyDo( int bno ){    System.out.println("BoardController.getReplyDo");
+        return boardService.getReplyDo( bno );
     }
     //==================
 

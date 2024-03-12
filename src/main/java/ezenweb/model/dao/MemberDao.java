@@ -43,7 +43,7 @@ public class MemberDao extends Dao {
                 return true;
             }
         }catch (Exception e){
-            System.out.println("memberDao.doPostLogin");
+            System.out.println(e);
         }
         return false;
     }

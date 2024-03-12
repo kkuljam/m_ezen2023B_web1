@@ -124,17 +124,14 @@ public class BoardService {
         return boardDao.boardWriterAuth(bno,mid);
     }
 
-    //7. 댓글 등록
-    public boolean postReplyWrite(Map<String,String> map){
-        System.out.println("BoardController.postReplyWrite");
+    // 7. 댓글 등록
+    public boolean postReplyWrite( Map< String , String > map ){    System.out.println("BoardController.postReplyWrite");
         return boardDao.postReplyWrite(map);
     }
-
-    //8. 댓글 출력 ( brno, brcontent,brindex , brdate, mno) 매개변수 bno
-
-    public List<Map<String,String>> getReplyDo(int bno){
-        System.out.println("BoardController.getReplyDo");
-        return boardDao.getReplyDo(bno);
+    // 8. 댓글 출력
+    public List< Map< String , Object > > getReplyDo( int bno ){    System.out.println("BoardController.getReplyDo");
+        return boardDao.getReplyDo( bno );
     }
+
 
 }
