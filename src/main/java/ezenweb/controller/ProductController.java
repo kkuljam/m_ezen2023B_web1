@@ -6,10 +6,7 @@ import ezenweb.model.dto.ProductDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +41,33 @@ public class ProductController {
         return productService.getProductList();
     }
 
+
+    //3. 해당 제품의 찜하기 등록 // 언제 실행: 로그인 했고 찜하기 버튼 클릭 , 매개변수: pno, 리턴: boolean
+    @PostMapping("/plike.do")
+    @ResponseBody
+    public boolean getPlikeWrite(int pno){
+        System.out.println("pno = " + pno);
+        Object object=request.getSession().getAttribute("loginDto");
+        if(object==null)return false;
+        int mno=memberService.doGetLoginInfo((String) object).getNo();
+        System.out.println("mno = " + mno);
+        return productService.getPlikeWrite(pno,mno);
+    }
+    //4. 해당 제품의 찜하기 상태 출력 // 언제 실행:로그인 했고 찜하기 버튼 클릭 출력, 매개변수: pno, 리턴: boolean(등록 있다/없다)
+    @GetMapping("/plike.do")
+    @ResponseBody
+    public boolean getPlikeView(int pno){
+        int mno=1;
+        return productService.getPlikeView(pno,mno);
+    }
+    //5. 해당 제품의 찜하기 취소/삭제 // 언제 실행: 로그인 했고 찜하기 버튼 클릭,매개변수: pno, 리턴: boolean
+    @DeleteMapping("/plike.do")
+    @ResponseBody
+    public boolean getPlikeDelete(int pno){
+        int mno=1;
+        return productService.getPlikeDelete(pno,mno);
+    }
+    //=============================
     //1. 등록페이지/화면/뷰 요청
     @GetMapping("/register")
     public String productRegister(){

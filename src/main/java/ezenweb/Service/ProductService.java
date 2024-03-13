@@ -31,4 +31,17 @@ public class ProductService {
     public List<ProductDto> getProductList(){
         return productDao.getProductList();
     }
+    //3. 해당 제품의 찜하기 등록
+    public boolean getPlikeWrite(int pno,int mno){
+        System.out.println("pno = " + pno);
+        return productDao.getPlikeWrite(pno,mno);
+    }
+    //4. 해당 제품의 찜하기 상태 출력
+    public boolean getPlikeView(int pno,int mno){
+        return productDao.getPlikeView(pno,mno);
+    }
+    //5. 해당 제품의 찜하기 취소/삭제
+    public boolean getPlikeDelete(int pno,int mno){
+        return productDao.getPlikeDelete(pno,mno);
+    }
 }

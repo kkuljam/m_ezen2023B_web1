@@ -19,7 +19,8 @@ console.log( 'api.js');
             var markers = response.data.map( (object) => {
                 // 마커 1개 만들어서 리턴 해서 markers 에 대입.
                 return new kakao.maps.Marker({
-                    position : new kakao.maps.LatLng( object.식당위도, object.식당경도 ) // 마커의 위치
+                    position : new kakao.maps.LatLng( object.식당위도, object.식당경도 ), // 마커의 위치
+
                 });
             });
             // 클러스터러에 마커*들을 추가합니다
